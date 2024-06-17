@@ -1,0 +1,58 @@
+{
+  "components": [
+    {
+      "label": "Pack Cash",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_09s49sv",
+        "columns": null
+      },
+      "id": "Field_0aokl4c",
+      "key": "money",
+      "description": "How much cash do you want to bring?",
+      "validate": {
+        "required": true,
+        "minLength": 1,
+        "pattern": "^(?:0|[1-9][0-9]*)\\\\.[0-9]+$"
+      }
+    },
+    {
+      "label": "Which Cinema?",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_11edb4q",
+        "columns": null
+      },
+      "id": "Field_1b07l9y",
+      "key": "cinema",
+      "description": "Cinema you are going to",
+      "validate": {
+        "required": true,
+        "pattern": "Essen|Mülheim"
+      }
+    },
+    {
+      "label": "Enter price of Taxi",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_15xx79p",
+        "columns": null
+      },
+      "id": "Field_0powvbc",
+      "key": "taxiCost",
+      "description": "for tax reasons",
+      "validate": {
+        "pattern": "^(?:0|[1-9][0-9]*)\\\\.[0-9]+$"
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_0kvr6s8",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.5.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16
+}
