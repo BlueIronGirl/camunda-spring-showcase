@@ -4,17 +4,17 @@
     <bpmn:startEvent id="StartEvent_1" name="Alice wants to go to the cinema">
       <bpmn:outgoing>SequenceFlow_1fp17al</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1fp17al" sourceRef="StartEvent_1" targetRef="say-hello" />
+    <bpmn:sequenceFlow id="SequenceFlow_1fp17al" sourceRef="StartEvent_1" targetRef="preparation" />
     <bpmn:endEvent id="EndEvent_0x6ir2l" name="Alice arrives at the cinema">
       <bpmn:incoming>Flow_09iq21x</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="say-hello" name="Preparation" camunda:formRef="camunda-forms:/forms/preparation.form" camunda:formRefBinding="latest" camunda:candidateUsers="root">
+    <bpmn:userTask id="preparation" name="Preparation" camunda:formKey="camunda-forms:/forms/preparation.form">
       <bpmn:incoming>SequenceFlow_1fp17al</bpmn:incoming>
       <bpmn:outgoing>Flow_1m83fik</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1m83fik" sourceRef="say-hello" targetRef="Activity_0azlnfk" />
-    <bpmn:sequenceFlow id="Flow_09iq21x" sourceRef="Activity_0azlnfk" targetRef="EndEvent_0x6ir2l" />
-    <bpmn:userTask id="Activity_0azlnfk" name="Get A Taxi" camunda:formRef="camunda-forms:/forms/gettaxi.form" camunda:formRefBinding="latest">
+    <bpmn:sequenceFlow id="Flow_1m83fik" sourceRef="preparation" targetRef="gettaxi" />
+    <bpmn:sequenceFlow id="Flow_09iq21x" sourceRef="gettaxi" targetRef="EndEvent_0x6ir2l" />
+    <bpmn:userTask id="gettaxi" name="Get A Taxi" camunda:formKey="camunda-forms:/forms/gettaxi.form">
       <bpmn:incoming>Flow_1m83fik</bpmn:incoming>
       <bpmn:outgoing>Flow_09iq21x</bpmn:outgoing>
     </bpmn:userTask>
@@ -27,17 +27,17 @@
           <dc:Bounds x="156" y="142" width="84" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_08mft2c_di" bpmnElement="say-hello">
-        <dc:Bounds x="270" y="77" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0x6ir2l_di" bpmnElement="EndEvent_0x6ir2l">
         <dc:Bounds x="592" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="574" y="142" width="73" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0zvn5qv_di" bpmnElement="Activity_0azlnfk">
+      <bpmndi:BPMNShape id="UserTask_08mft2c_di" bpmnElement="preparation">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zvn5qv_di" bpmnElement="gettaxi">
         <dc:Bounds x="430" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1fp17al_di" bpmnElement="SequenceFlow_1fp17al">
