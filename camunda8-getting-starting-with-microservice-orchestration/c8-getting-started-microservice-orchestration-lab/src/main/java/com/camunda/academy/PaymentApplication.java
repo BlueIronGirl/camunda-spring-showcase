@@ -1,8 +1,12 @@
-package om.camunda.academy;
+package com.camunda.academy;
 
+import com.camunda.academy.handler.CreditCardServiceHandler;
 import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.worker.JobWorker;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProvider;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProviderBuilder;
+
+import java.time.Duration;
 
 /**
  * Hello world!
@@ -26,7 +30,13 @@ public class PaymentApplication {
                 .gatewayAddress(ZEEBE_ADDRESS)
                 .credentialsProvider(credentialsProvider)
                 .build()) {
-            System.out.println("Connected to: " + client.newTopologyRequest().send().join());
+            final JobWorker creditCardWorker =
+                    client.newWorker()
+                            .jobType("chargeCreditCard")
+                            .handler(new CreditCardServiceHandler())
+                            .timeout(Duration.ofSeconds(10).toMillis())
+                            .open();
+            Thread.sleep(10000);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package om.camunda.academy;
+package com.camunda.academy;
 
 import static org.junit.Assert.assertTrue;
 
