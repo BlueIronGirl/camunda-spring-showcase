@@ -2,7 +2,6 @@ package com.camunda.academy;
 
 import com.camunda.academy.handler.CreditCardServiceHandler;
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.api.worker.JobWorker;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProvider;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProviderBuilder;
 
@@ -33,27 +32,32 @@ public class PaymentApplication {
                 .credentialsProvider(credentialsProvider)
                 .build()) {
 
-            final Map<String, Object> variables = new HashMap<>();
-            variables.put("reference", "C8_12345");
-            variables.put("amount", Double.valueOf(100.00));
-            variables.put("cardNumber", "1234567812345678");
-            variables.put("cardExpiry", "12/2023");
-            variables.put("cardCVC", "123");
+            //Request the Cluster Topology
+            System.out.println("Connected to: " + client.newTopologyRequest().send().join());
 
+            final Map<String, Object> startProcessVariables = new HashMap<>();
+            startProcessVariables.put("reference", "C8_12345");
+            startProcessVariables.put("amount", Double.valueOf(100.00));
+            startProcessVariables.put("cardNumber", "1234567812345678");
+            startProcessVariables.put("cardExpiry", "12/2023");
+            startProcessVariables.put("cardCVC", "123");
+
+            // Launch the Process Instance
             client.newCreateInstanceCommand()
                     .bpmnProcessId("paymentProcess")
                     .latestVersion()
-                    .variables(variables)
+                    .variables(startProcessVariables)
                     .send()
                     .join();
 
+            // Start a Job Worker
+            client.newWorker()
+                    .jobType("chargeCreditCard")
+                    .handler(new CreditCardServiceHandler())
+                    .timeout(Duration.ofSeconds(10).toMillis())
+                    .open();
 
-            final JobWorker creditCardWorker =
-                    client.newWorker()
-                            .jobType("chargeCreditCard")
-                            .handler(new CreditCardServiceHandler())
-                            .timeout(Duration.ofSeconds(10).toMillis())
-                            .open();
+            // Wait for the workers
             Thread.sleep(10000);
         } catch (Exception e) {
             e.printStackTrace();
