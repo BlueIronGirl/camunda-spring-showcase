@@ -7,6 +7,10 @@
     <groupId>de.alicetools</groupId>
     <artifactId>camunda-spring-showcase</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>c8-getting-started-microservice-orchestration-lab</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
