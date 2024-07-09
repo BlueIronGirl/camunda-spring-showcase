@@ -7,6 +7,8 @@ import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProvider;
 import io.camunda.zeebe.client.impl.oauth.OAuthCredentialsProviderBuilder;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -30,6 +32,22 @@ public class PaymentApplication {
                 .gatewayAddress(ZEEBE_ADDRESS)
                 .credentialsProvider(credentialsProvider)
                 .build()) {
+
+            final Map<String, Object> variables = new HashMap<>();
+            variables.put("reference", "C8_12345");
+            variables.put("amount", Double.valueOf(100.00));
+            variables.put("cardNumber", "1234567812345678");
+            variables.put("cardExpiry", "12/2023");
+            variables.put("cardCVC", "123");
+
+            client.newCreateInstanceCommand()
+                    .bpmnProcessId("paymentProcess")
+                    .latestVersion()
+                    .variables(variables)
+                    .send()
+                    .join();
+
+
             final JobWorker creditCardWorker =
                     client.newWorker()
                             .jobType("chargeCreditCard")
